@@ -24,24 +24,25 @@ const Register = ({onRegister, navigate}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await axios.post('/usuario', formData);
-            const {access_token: token} = response.data;
-            console.log(response)
-            localStorage.setItem('token', token);
-            onRegister();
-            navigate('/');
-        } catch (error) {
-            if (error.response && error.response.data) {
-                const errorsArray = error.response.data.map(error => error.msg);
-                setErrors(errorsArray);
-                toast.error(<ErrorToast errors={errorsArray}/>); // Use o componente ErrorToast personalizado
-            } else {
-                const errorMessage = 'Erro ao registrar usuário';
-                setErrors([errorMessage]);
-                toast.error(<ErrorToast errors={[errorMessage]}/>); // Use o componente ErrorToast personalizado
-            }
-        }
+        axios.post('/usuario', formData)
+            .then(response => {
+                const {access_token: token} = response.data;
+                localStorage.setItem('token', token);
+                onRegister();
+                navigate('/');
+            })
+            .catch(error => {
+                if (error.response && error.response.data) {
+                    const errorsArray = error.response.data.map(error => error.msg);
+                    setErrors(errorsArray);
+                    toast.error(<ErrorToast errors={errorsArray}/>); // Use o componente ErrorToast personalizado
+                } else {
+                    const errorMessage = 'Erro ao registrar usuário';
+                    setErrors([errorMessage]);
+                    toast.error(<ErrorToast errors={[errorMessage]}/>); // Use o componente ErrorToast personalizado
+                }
+            });
+
     };
 
     return (

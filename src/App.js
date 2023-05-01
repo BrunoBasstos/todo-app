@@ -15,10 +15,12 @@ function App() {
     const navigate = useNavigate;
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (token) {
             axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             setIsLoggedIn(true);
+        } else {
+            axios.defaults.headers.common.Authorization = null;
         }
     }, []);
 
@@ -27,7 +29,8 @@ function App() {
     };
 
     const handleRegister = () => {
-        navigate('/login');
+        setIsLoggedIn(true);
+        navigate('/');
     }
 
     const handleLogout = () => {
@@ -75,9 +78,10 @@ function App() {
                                 </>
                             ) : (
                                 <>
-                                    <Route path="/register" element={<Register/>} onRegister={handleRegister}
-                                           navigate={navigate}/>
-                                    <Route path="/login" element={<Login onLogin={handleLogin} navigate={navigate}/>}/>
+                                    <Route path="/register"
+                                           element={<Register onRegister={handleRegister} navigate={navigate}/>}/>
+                                    <Route path="/login"
+                                           element={<Login onLogin={handleLogin} navigate={navigate}/>}/>
                                 </>
                             )
                         }
