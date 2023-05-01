@@ -37,7 +37,6 @@ const Login = ({onLogin, navigate}) => {
         }
     };
 
-
     return (
         <Box sx={{width: '100%', maxWidth: 400, mx: 'auto'}}>
             <Typography variant="h4" align="center" gutterBottom>
