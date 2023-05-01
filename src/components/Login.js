@@ -27,15 +27,17 @@ const Login = ({onLogin, navigate}) => {
 
         try {
             const response = await axios.post('/login', formData);
-            const {access_token: token} = response.data;
-
+            const {access_token: token} = response.data[0];
+            console.log(response, token);
             localStorage.setItem('token', token);
+            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             onLogin();
             navigate('/');
         } catch (error) {
             setError('Credenciais inválidas');
         }
     };
+
 
     return (
         <Box sx={{width: '100%', maxWidth: 400, mx: 'auto'}}>

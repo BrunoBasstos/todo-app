@@ -23,7 +23,7 @@ axios.defaults.baseURL = 'http://localhost:5000';
 const TaskList = () => {
     const [tasks, setTasks] = useState([]);
     const [prioridades, setPrioridades] = useState([]);
-    const [status, setStatus] = useState([]);
+    const [statusList, setStatusList] = useState([]);
     const [newTask, setNewTask] = useState({
         titulo: '',
         descricao: '',
@@ -46,7 +46,7 @@ const TaskList = () => {
 
     const fetchStatus = async () => {
         const response = await axios.get('/status');
-        setStatus(response.data);
+        setStatusList(response.data);
     };
 
     const fetchTasks = async () => {
@@ -150,7 +150,7 @@ const TaskList = () => {
                         value={newTask.status}
                         onChange={(e) => setNewTask({...newTask, status: e.target.value})}
                     >
-                        {status.map((status) => (
+                        {statusList.map((status) => (
                             <MenuItem key={status} value={status}>
                                 {status}
                             </MenuItem>
@@ -164,7 +164,7 @@ const TaskList = () => {
             </Dialog>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Grid container spacing={2} justifyContent="center" style={{marginTop: '16px'}}>
-                    {['A Fazer', 'Em Andamento', 'Concluída'].map((status) => (
+                    {statusList.map((status) => (
                         <Grid item key={status} xs={12} sm={6} md={4}>
                             <Typography variant="h6" align="center">
                                 {status}
