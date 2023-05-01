@@ -13,6 +13,7 @@ const Register = ({onRegister, navigate}) => {
         nome: '',
         email: '',
         senha: '',
+        senhaConfirm: ''
     });
     const [errors, setErrors] = useState(null);
 
@@ -21,27 +22,52 @@ const Register = ({onRegister, navigate}) => {
         setFormData((prev) => ({...prev, [name]: value}));
     };
 
+    const validateForm = () => {
+        let formErrors = [];
+
+        if(!formData.nome) formErrors.push('O nome é obrigatório');
+
+        if(!formData.email) formErrors.push('O e-mail é obrigatório');
+
+        if (formData.senha !== formData.senhaConfirm) {
+            formErrors.push('As senhas não coincidem');
+        }
+
+        if (formData.senha.length < 5) {
+            formErrors.push('A senha deve ter no mínimo 5 caracteres');
+        }
+
+        return formErrors;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const formErrors = validateForm();
 
-        axios.post('/usuario', formData)
-            .then(response => {
-                const {access_token: token} = response.data;
-                localStorage.setItem('token', token);
-                onRegister();
-                navigate('/');
-            })
-            .catch(error => {
-                if (error.response && error.response.data) {
-                    const errorsArray = error.response.data.map(error => error.msg);
-                    setErrors(errorsArray);
-                    toast.error(<ErrorToast errors={errorsArray}/>); // Use o componente ErrorToast personalizado
-                } else {
-                    const errorMessage = 'Erro ao registrar usuário';
-                    setErrors([errorMessage]);
-                    toast.error(<ErrorToast errors={[errorMessage]}/>); // Use o componente ErrorToast personalizado
-                }
-            });
+        if (formErrors.length > 0) {
+            setErrors(formErrors);
+            toast.error(<ErrorToast errors={formErrors}/>);
+        } else {
+
+            axios.post('/usuario', formData)
+                .then(response => {
+                    const {access_token: token} = response.data;
+                    localStorage.setItem('token', token);
+                    onRegister();
+                    navigate('/');
+                })
+                .catch(error => {
+                    if (error.response && error.response.data) {
+                        const errorsArray = error.response.data.map(error => error.msg);
+                        setErrors(errorsArray);
+                        toast.error(<ErrorToast errors={errorsArray}/>); // Use o componente ErrorToast personalizado
+                    } else {
+                        const errorMessage = 'Erro ao registrar usuário';
+                        setErrors([errorMessage]);
+                        toast.error(<ErrorToast errors={[errorMessage]}/>); // Use o componente ErrorToast personalizado
+                    }
+                });
+        }
 
     };
 
@@ -79,6 +105,15 @@ const Register = ({onRegister, navigate}) => {
                     value={formData.senha}
                     onChange={handleChange}
                 />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    name="senhaConfirm"
+                    label="Confirmar Senha"
+                    type="password"
+                    value={formData.senhaConfirm}
+                    onChange={handleChange}
+                />
                 <Box sx={{mt: 3}}>
                     <Button
                         fullWidth
@@ -89,11 +124,11 @@ const Register = ({onRegister, navigate}) => {
                         Registrar
                     </Button>
                 </Box>
-                <Box sx={{mt: 2}}>
+                <Box sx={{ mt: 2 }}>
                     <Typography variant="body2" align="center">
                         Já possui uma conta?
                         {' '}
-                        <Button component={Link} to="/login" color="primary">
+                        <Button onClick={navigate} color="primary">
                             Acesse agora
                         </Button>
                     </Typography>

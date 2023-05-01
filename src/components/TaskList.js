@@ -22,13 +22,14 @@ axios.defaults.baseURL = 'http://localhost:5000';
 
 const TaskList = () => {
     const [tasks, setTasks] = useState([]);
-    const [prioridades, setPrioridades] = useState([]);
+    const [prioridadesList, setPrioridadesList] = useState([]);
     const [statusList, setStatusList] = useState([]);
+    const [selectedTask, setSelectedTask] = useState(null);
     const [newTask, setNewTask] = useState({
         titulo: '',
         descricao: '',
-        status: 'A Fazer',
-        prioridade: 'Baixa',
+        status: statusList[0],
+        prioridade: prioridadesList[0],
         usuario: 1,
     });
     const [open, setOpen] = useState(false);
@@ -39,9 +40,23 @@ const TaskList = () => {
         fetchTasks();
     }, []);
 
+    const moveTask = (taskId, newStatus) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) => (task.id === taskId ? {...task, status: newStatus} : task))
+        );
+    };
+
+    const handleTaskClick = (task) => {
+        setSelectedTask(task);
+    };
+
+    const handleCloseDetails = () => {
+        setSelectedTask(null);
+    };
+
     const fetchPrioridades = async () => {
         const response = await axios.get('/prioridade');
-        setPrioridades(response.data);
+        setPrioridadesList(response.data);
     };
 
     const fetchStatus = async () => {
@@ -60,7 +75,7 @@ const TaskList = () => {
         }
 
         await axios.post('/tarefa', newTask);
-        setNewTask({titulo: '', descricao: '', status: 'A Fazer', prioridade: 'Baixa', usuario: 1});
+        setNewTask({titulo: '', descricao: '', status: statusList[0], prioridade: prioridadesList[0], usuario: 0});
         fetchTasks();
         handleClose();
     };
@@ -71,9 +86,15 @@ const TaskList = () => {
     };
 
     const updateTask = async (id, task, newStatus) => {
-        await axios.put(`/tarefa/${id}`, {...task, status: newStatus});
-        fetchTasks();
+        try {
+            await axios.put(`/tarefa/${id}`, {...task, status: newStatus});
+            fetchTasks();
+        } catch (error) {
+            console.error('Error updating task:', error);
+            moveTask(id, task.status);
+        }
     };
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -94,8 +115,10 @@ const TaskList = () => {
         }
 
         const task = tasks.find((t) => t.id === parseInt(draggableId));
+        moveTask(task.id, destination.droppableId);
         updateTask(task.id, task, destination.droppableId);
     };
+
 
     const getTasksByStatus = (status) => {
         return tasks.filter((task) => task.status === status);
@@ -136,7 +159,7 @@ const TaskList = () => {
                         value={newTask.prioridade}
                         onChange={(e) => setNewTask({...newTask, prioridade: e.target.value})}
                     >
-                        {prioridades.map((prioridade) => (
+                        {prioridadesList.map((prioridade) => (
                             <MenuItem key={prioridade} value={prioridade}>
                                 {prioridade}
                             </MenuItem>
@@ -167,7 +190,7 @@ const TaskList = () => {
                     {statusList.map((status) => (
                         <Grid item key={status} xs={12} sm={6} md={4}>
                             <Typography variant="h6" align="center">
-                                {status}
+                                {status} ({getTasksByStatus(status).length})
                             </Typography>
                             <Droppable droppableId={status}>
                                 {(provided) => (
@@ -192,10 +215,36 @@ const TaskList = () => {
                                                         }}
                                                     >
                                                         <CardContent>
-                                                            <Typography variant="h6">{task.titulo}</Typography>
                                                             <Typography
-                                                                variant="body2">{task.descricao}</Typography>
+                                                                variant="h6"
+                                                                component="div"
+                                                                noWrap
+                                                                sx={{
+                                                                    textOverflow: 'ellipsis',
+                                                                    overflow: 'hidden',
+                                                                    maxHeight: '3em', // Limite a altura para, por exemplo, 3 linhas
+                                                                    cursor: 'pointer'
+                                                                }}
+                                                                onClick={() => handleTaskClick(task)}
+                                                            >
+                                                                {task.titulo}
+                                                            </Typography>
+                                                            <Typography
+                                                                variant="body2"
+                                                                component="div"
+                                                                noWrap
+                                                                sx={{
+                                                                    textOverflow: 'ellipsis',
+                                                                    overflow: 'hidden',
+                                                                    maxHeight: '3em', // Limite a altura para, por exemplo, 3 linhas
+                                                                    cursor: 'pointer'
+                                                                }}
+                                                                onClick={() => handleTaskClick(task)}
+                                                            >
+                                                                {task.descricao}
+                                                            </Typography>
                                                         </CardContent>
+
                                                         <CardActions>
                                                             <Button size="small" color="secondary"
                                                                     onClick={() => deleteTask(task.id)}>
@@ -214,6 +263,16 @@ const TaskList = () => {
                     ))}
                 </Grid>
             </DragDropContext>
+            <Dialog open={Boolean(selectedTask)} onClose={handleCloseDetails}>
+                <DialogTitle>{selectedTask?.titulo}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>{selectedTask?.descricao}</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDetails}>Fechar</Button>
+                </DialogActions>
+            </Dialog>
+
         </Box>
     );
 };

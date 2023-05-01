@@ -1,21 +1,37 @@
 import React, {useState, useEffect} from 'react';
-import {BrowserRouter as Router, Route, Routes, Link, useNavigate} from 'react-router-dom';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import axios from 'axios';
-import {AppBar, Toolbar, Typography, Button, Container} from '@mui/material';
-import Login from './components/Login';
-import Register from './components/Register';
+import {Container} from '@mui/material';
 import TaskList from './components/TaskList';
 import UserList from './components/UserList';
+import Header from './components/Header';
+import Home from './components/Home'; // Importe o componente Home
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {CssBaseline} from '@mui/material';
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [darkMode, setDarkMode] = useState(() => {
+        const localDarkMode = localStorage.getItem('darkMode');
+        return localDarkMode === 'true';
+    });
 
-    const navigate = useNavigate;
+    const toggleDarkMode = () => {
+        const newDarkMode = !darkMode;
+        setDarkMode(newDarkMode);
+        localStorage.setItem('darkMode', newDarkMode);
+    };
+
+    const theme = createTheme({
+        palette: {
+            mode: darkMode ? 'dark' : 'light',
+        },
+    });
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             setIsLoggedIn(true);
@@ -28,67 +44,44 @@ function App() {
         setIsLoggedIn(true);
     };
 
-    const handleRegister = () => {
-        setIsLoggedIn(true);
-        navigate('/');
-    }
-
     const handleLogout = () => {
         localStorage.removeItem('token');
         setIsLoggedIn(false);
         axios.defaults.headers.common.Authorization = null;
-        navigate('/login');
+    };
+
+    const handleRegister = () => {
+        setIsLoggedIn(true);
     };
 
     return (
-        <Router>
-            <div>
-                <AppBar position="static">
-                    <Toolbar>
-                        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            Todo App
-                        </Typography>
-                        {isLoggedIn ? (
-                            <>
-                                <Button color="inherit" component={Link} to="/">
-                                    Tarefas
-                                </Button>
-                                <Button color="inherit" component={Link} to="/usuarios">
-                                    Usuários
-                                </Button>
-                                <Button color="inherit" onClick={handleLogout}>
-                                    Logout
-                                </Button>
-                            </>
-                        ) : (
-                            <Button color="inherit" component={Link} to="/login">
-                                Login
-                            </Button>
-                        )}
-                    </Toolbar>
-                </AppBar>
+        <ThemeProvider theme={theme}>
+            <CssBaseline/>
+            <Router>
+                {!isLoggedIn && <Navigate to="/"/>}
+                <div>
+                    {isLoggedIn &&
+                        <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} toggleDarkMode={toggleDarkMode}/>}
 
-                <Container className="mt-3">
-                    <Routes>
-                        {
-                            isLoggedIn ? (
+                    <Container className="mt-3">
+                        <Routes>
+                            {isLoggedIn ? (
                                 <>
                                     <Route path="/" element={<TaskList/>}/>
                                     <Route path="/usuarios" element={<UserList/>}/>
                                 </>
                             ) : (
                                 <>
-                                    <Route path="/register"
-                                           element={<Register onRegister={handleRegister} navigate={navigate}/>}/>
-                                    <Route path="/login"
-                                           element={<Login onLogin={handleLogin} navigate={navigate}/>}/>
+                                    <Route path="/" exact
+                                           element={<Home onLogin={handleLogin} toggleDarkMode={toggleDarkMode}/>}/>
+                                    {/*<Route path="/register" element={<Register onRegister={handleRegister}/>}/>*/}
                                 </>
-                            )
-                        }
-                    </Routes>
-                </Container>
-            </div>
-        </Router>
+                            )}
+                        </Routes>
+                    </Container>
+                </div>
+            </Router>
+        </ThemeProvider>
     );
 }
 
