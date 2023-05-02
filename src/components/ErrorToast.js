@@ -1,3 +1,4 @@
+// /src/components/ErrorToast.js
 import React from 'react';
 
 const ErrorToast = ({ errors }) => (

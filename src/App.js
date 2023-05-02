@@ -1,3 +1,4 @@
+// /src/App.js
 import React, {useState, useEffect} from 'react';
 import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import axios from 'axios';
@@ -64,13 +65,13 @@ function App() {
                             {isLoggedIn ? (
                                 <>
                                     <Route path="/" element={<TaskList/>}/>
+                                    
                                     <Route path="/usuarios" element={<UserList/>}/>
                                 </>
                             ) : (
                                 <>
                                     <Route path="/" exact
                                            element={<Home onLogin={handleLogin} toggleDarkMode={toggleDarkMode}/>}/>
-                                    {/*<Route path="/register" element={<Register onRegister={handleRegister}/>}/>*/}
                                 </>
                             )}
                         </Routes>

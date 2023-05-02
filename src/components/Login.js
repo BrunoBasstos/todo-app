@@ -1,3 +1,4 @@
+// /src/components/ErrorToast.js
 import React, {useState} from 'react';
 import axios from 'axios';
 import {Box, TextField, Button, Typography} from '@mui/material';
@@ -37,17 +38,16 @@ const Login = ({onLogin, navigate}) => {
             setErrors(formErrors);
             toast.error(<ErrorToast errors={formErrors}/>);
         } else {
-            await axios.post('/login', formData)
-                .then(response => {
-                    const {access_token: token} = response.data[0];
-                    localStorage.setItem('token', token);
-                    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-                    onLogin();
-                    navigate('/');
-                })
-                .catch(error => {
-                    setError('Credenciais inválidas');
-                });
+            try {
+                const response = await axios.post('/login', formData);
+                const {access_token: token} = response.data[0];
+                localStorage.setItem('token', token);
+                axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+                onLogin();
+                navigate('/');
+            } catch (error) {
+                setError('Credenciais inválidas');
+            }
         }
     };
 

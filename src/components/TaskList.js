@@ -1,3 +1,4 @@
+// /src/components/TaskList.js
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {
@@ -28,8 +29,8 @@ const TaskList = () => {
     const [newTask, setNewTask] = useState({
         titulo: '',
         descricao: '',
-        status: statusList[0],
-        prioridade: prioridadesList[0],
+        status: 0,
+        prioridade: 0,
         usuario: 1,
     });
     const [open, setOpen] = useState(false);
