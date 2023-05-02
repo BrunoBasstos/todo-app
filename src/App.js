@@ -50,10 +50,6 @@ function App() {
         axios.defaults.headers.common.Authorization = null;
     };
 
-    const handleRegister = () => {
-        setIsLoggedIn(true);
-    };
-
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>

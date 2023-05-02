@@ -8,7 +8,7 @@ import ErrorToast from './ErrorToast';
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
-const Register = ({onRegister, navigate}) => {
+const Register = ({handleRegister, navigate}) => {
     const [formData, setFormData] = useState({
         nome: '',
         email: '',
@@ -53,8 +53,7 @@ const Register = ({onRegister, navigate}) => {
                 .then(response => {
                     const {access_token: token} = response.data;
                     localStorage.setItem('token', token);
-                    onRegister();
-                    navigate('/');
+                    handleRegister();
                 })
                 .catch(error => {
                     if (error.response && error.response.data) {

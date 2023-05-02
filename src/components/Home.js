@@ -8,6 +8,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import IconButton from "@mui/material/IconButton";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import {Button} from "@mui/material";
+import {toast, ToastContainer} from "react-toastify";
 
 const Home = ({onLogin, toggleDarkMode}) => {
     const [showRegister, setShowRegister] = useState(false);
@@ -16,8 +17,14 @@ const Home = ({onLogin, toggleDarkMode}) => {
         setShowRegister(!showRegister);
     };
 
+    const handleRegister = () => {
+        toggleForm();
+        toast.success('Usuário registrado com sucesso! Faça login para continuar.');
+    }
+
     return (
         <Grid container justifyContent="center" alignItems="center" style={{minHeight: '100vh'}}>
+            <ToastContainer/>
             <Grid item style={{maxWidth: '50%'}}>
                 <IconButton color="inherit" onClick={toggleDarkMode}
                             sx={{position: 'absolute', top: 12, right: 12}}>
@@ -32,7 +39,7 @@ const Home = ({onLogin, toggleDarkMode}) => {
                         Engenharia de Software da PUC-RIO
                     </Typography>
                     {showRegister ? (
-                        <Register onRegister={onLogin} navigate={toggleForm}/>
+                        <Register handleRegister={handleRegister} navigate={toggleForm}/>
                     ) : (
                         <Login onLogin={onLogin} navigate={toggleForm}/>
                     )}
