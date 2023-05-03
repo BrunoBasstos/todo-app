@@ -27,8 +27,9 @@ import ErrorIcon from '@mui/icons-material/Error';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-const TaskList = () => {
+const TaskList = ({loggedUser}) => {
     const [tasks, setTasks] = useState([]);
     const [prioridadesList, setPrioridadesList] = useState([]);
     const [statusList, setStatusList] = useState([]);
@@ -304,10 +305,32 @@ const TaskList = () => {
                                                         </CardContent>
 
                                                         <CardActions>
-                                                            <Button size="small" color="secondary"
-                                                                    onClick={() => deleteTask(task.id)}>
-                                                                Excluir
-                                                            </Button>
+                                                            <Grid container alignItems="center" sx={{
+                                                                display: 'flex',
+                                                                justifyContent: 'space-between',
+                                                            }}>
+                                                                <Grid item>
+                                                                    <Button size="small" color="secondary"
+                                                                            onClick={() => deleteTask(task.id)}>
+                                                                        Excluir
+                                                                    </Button>
+                                                                </Grid>
+                                                                {loggedUser.perfil === 'administrador' && task.usuario.id !== loggedUser.id && (
+                                                                    <>
+                                                                        <Grid item sx={{
+                                                                            display: 'flex',
+                                                                            alignItems: 'center',
+                                                                            marginRight: '8px',
+                                                                        }}>
+                                                                            <Tooltip title={task.usuario.nome}>
+                                                                                <AccountCircleIcon fontSize="small"/>
+                                                                            </Tooltip>
+                                                                        </Grid>
+                                                                    </>
+                                                                )}
+                                                            </Grid>
+                                                            {/* ícone de usuário com o nome do dono da tarefa */}
+
                                                         </CardActions>
                                                     </Card>
                                                 )}

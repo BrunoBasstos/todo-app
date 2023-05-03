@@ -78,7 +78,7 @@ function App() {
                         <Routes>
                             {isLoggedIn ? (
                                 <>
-                                    <Route path="/" element={<TaskList/>}/>
+                                    <Route path="/" element={<TaskList loggedUser={loggedUser}/>}/>
                                     {loggedUser?.perfil === 'administrador' && (
                                         <Route path="/usuarios" element={<UserList loggedUser={loggedUser}/>}/>
                                     )}
