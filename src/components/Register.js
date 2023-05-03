@@ -2,12 +2,9 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {Box, TextField, Button, Typography} from '@mui/material';
-import {Link} from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import {toast, ToastContainer} from 'react-toastify';
 import ErrorToast from './ErrorToast';
-
-axios.defaults.baseURL = 'http://localhost:5000';
 
 const Register = ({handleRegister, navigate}) => {
     const [formData, setFormData] = useState({
@@ -26,9 +23,9 @@ const Register = ({handleRegister, navigate}) => {
     const validateForm = () => {
         let formErrors = [];
 
-        if(!formData.nome) formErrors.push('O nome é obrigatório');
+        if (!formData.nome) formErrors.push('O nome é obrigatório');
 
-        if(!formData.email) formErrors.push('O e-mail é obrigatório');
+        if (!formData.email) formErrors.push('O e-mail é obrigatório');
 
         if (formData.senha !== formData.senhaConfirm) {
             formErrors.push('As senhas não coincidem');
@@ -124,7 +121,7 @@ const Register = ({handleRegister, navigate}) => {
                         Registrar
                     </Button>
                 </Box>
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{mt: 2}}>
                     <Typography variant="body2" align="center">
                         Já possui uma conta?
                         {' '}

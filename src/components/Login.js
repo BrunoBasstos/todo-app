@@ -5,15 +5,12 @@ import {Box, TextField, Button, Typography} from '@mui/material';
 import {toast, ToastContainer} from "react-toastify";
 import ErrorToast from "./ErrorToast";
 
-axios.defaults.baseURL = 'http://localhost:5000';
-
 const Login = ({onLogin, navigate}) => {
     const [errors, setErrors] = useState(null);
     const [formData, setFormData] = useState({
         email: '',
         senha: '',
     });
-    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -22,11 +19,8 @@ const Login = ({onLogin, navigate}) => {
 
     const validateForm = () => {
         let formErrors = [];
-
         if (!formData.email) formErrors.push('Informe seu email');
-
         if (!formData.senha) formErrors.push('Informe sua senha');
-
         return formErrors;
     };
 
@@ -40,13 +34,22 @@ const Login = ({onLogin, navigate}) => {
         } else {
             try {
                 const response = await axios.post('/login', formData);
+                const loggedUser = response.data[0];
                 const {access_token: token} = response.data[0];
                 localStorage.setItem('token', token);
                 axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-                onLogin();
+                onLogin(loggedUser);
                 navigate('/');
             } catch (error) {
-                setError('Credenciais inválidas');
+                let loginErrors = [];
+                if (error.response && error.response.data) {
+                    for (const err of error.response.data) {
+                        const {msg} = err;
+                        loginErrors.push(msg);
+                    }
+                    setErrors(loginErrors);
+                    toast.error(<ErrorToast errors={loginErrors}/>);
+                }
             }
         }
     };
