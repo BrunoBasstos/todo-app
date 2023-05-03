@@ -86,7 +86,7 @@ const TaskList = () => {
     };
 
     const fetchTasks = async () => {
-        const response = await axios.get('/tarefa');
+        const response = await axios.get('/tarefas');
         setTasks(response.data);
     };
 
@@ -104,13 +104,13 @@ const TaskList = () => {
     };
 
     const deleteTask = async (id) => {
-        await axios.delete(`/tarefa/${id}`);
+        await axios.delete(`/tarefa`, {data: {id: id}});
         fetchTasks();
     };
 
     const updateTask = async (id, task, newStatus) => {
         try {
-            await axios.put(`/tarefa/${id}`, {...task, status: newStatus});
+            await axios.put(`/tarefa`, {...task, status: newStatus});
             fetchTasks();
         } catch (error) {
             console.error('Error updating task:', error);

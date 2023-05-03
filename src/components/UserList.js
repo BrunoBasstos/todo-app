@@ -32,7 +32,7 @@ const UserList = ({loggedUser}) => {
     const [selectedUser, setSelectedUser] = useState(null);
 
     const fetchUsers = async () => {
-        const response = await axios.get('/usuario');
+        const response = await axios.get('/usuarios');
         setUserList(response.data);
     };
 
@@ -48,7 +48,7 @@ const UserList = ({loggedUser}) => {
         }
 
         try {
-            await axios.put(`/usuario/${user.id}`, user);
+            await axios.put(`/usuario`, user);
             handleCloseEditDialog();
             fetchUsers();
         } catch (error) {
@@ -65,7 +65,7 @@ const UserList = ({loggedUser}) => {
     };
 
     const handleDeleteUser = async (id) => {
-        await axios.delete(`/usuario/${id}`);
+        await axios.delete(`/usuario`, {data: {id}});
         fetchUsers();
     };
 
