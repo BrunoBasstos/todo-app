@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+# ToDo App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este é um MVP para conclusão da primeira sprint do curso de pós graduação em engenharia de software pela PUC-Rio.
 
-## Available Scripts
+O ToDo App é uma aplicação em React que consome a ToDo API, uma aplicação Flask para gerenciamento de tarefas a serem realizadas. A aplicação frontend fornece uma interface amigável e responsiva para o usuário interagir com a API, permitindo a visualização, criação, edição e exclusão de tarefas e suas respectivas prioridades. A autenticação de usuário é realizada através da API utilizando a biblioteca JWT para geração de tokens de acesso.
 
-In the project directory, you can run:
+Este projeto é parte integrante do MVP desenvolvido durante a primeira sprint do curso de pós-graduação em Engenharia de Software pela PUC-Rio. Para mais informações sobre a API utilizada, consulte o repositório da [ToDo API](https://github.com/seu_usuario/seu_repositorio_api).
 
-### `npm start`
+## Tecnologias utilizadas
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React
+- Material-UI
+- React Router
+- Axios
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Como executar
 
-### `npm test`
+1. Clone o repositório.
+2. Instale as dependências do projeto com o comando `npm install` ou `yarn`.
+3. Inicie a aplicação com o comando `npm start` ou `yarn start`.
+4. Acesse a aplicação em `http://localhost:3000`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Como executar com Docker
 
-### `npm run build`
+1. Clone o repositório.
+2. Execute o comando `docker build -t todo-app .` para criar a imagem do container.
+4. Execute o comando `docker run --name todo-app -p 5000:5000 todo-app`.
+    1. Note que isto criará um container com o nome todo-app. Para reiniciar a aplicação nas próximas vezes, basta executar o comando `docker start todo-app`. Caso você queira remover o container, execute `docker rm -f todo-app`.
+4. Acesse a aplicação em `http://localhost:3000`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Pré-requisitos
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Antes de executar o projeto, certifique-se de ter instalado:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Node.js 12.x ou superior: [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
+- npm (geralmente já incluído com Node.js) ou Yarn: [https://yarnpkg.com/getting-started/install](https://yarnpkg.com/getting-started/install)
 
-### `npm run eject`
+## Observações
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Para utilizar o frontend, você deve ter a [ToDo API](https://github.com/seu_usuario/seu_repositorio_api) em execução e configurada corretamente.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Contribuições
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Contribuições são sempre bem-vindas! Se você deseja contribuir com este projeto, por favor, abra uma issue para discutir sua ideia antes de submeter um pull request.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Licença
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
