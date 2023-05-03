@@ -2,7 +2,7 @@
 
 Este é um MVP para conclusão da primeira sprint do curso de pós graduação em engenharia de software da PUC-Rio.
 
-O ToDo App é uma aplicação em React que consome a ToDo API, uma aplicação Flask para gerenciamento de tarefas a serem realizadas. A aplicação frontend fornece uma interface amigável e responsiva para o usuário interagir com a API, permitindo a visualização, criação, edição e exclusão de tarefas e suas respectivas prioridades. A autenticação de usuário é realizada através da API utilizando a biblioteca JWT para geração de tokens de acesso.
+O ToDo App é uma aplicação em React que consome a ToDo API, uma aplicação Flask para gerenciamento de tarefas. A aplicação frontend fornece uma interface amigável e responsiva para o usuário interagir com a API, permitindo a visualização, criação, edição e exclusão de tarefas e suas respectivas prioridades. A autenticação de usuário é realizada através da API utilizando a biblioteca JWT para geração de tokens de acesso.
 
 Este projeto é parte integrante do MVP desenvolvido durante a primeira sprint do curso de pós-graduação em Engenharia de Software pela PUC-Rio. Para mais informações sobre a API utilizada, consulte o repositório da [ToDo API](https://github.com/seu_usuario/seu_repositorio_api).
 
