@@ -1,7 +1,7 @@
 // /src/components/Register.js
 import React, {useState} from 'react';
 import axios from 'axios';
-import {Box, TextField, Button, Typography} from '@mui/material';
+import {Box, TextField, Button, Typography, Grid} from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
 import {toast, ToastContainer} from 'react-toastify';
 import ErrorToast from './ErrorToast';
@@ -61,9 +61,9 @@ const Register = ({handleRegister, navigate}) => {
     return (
         <Box sx={{width: '100%', maxWidth: 400, mx: 'auto'}}>
             <ToastContainer/>
-            <Typography variant="h4" align="center" gutterBottom>
-                Registrar-se
-            </Typography>
+            {/*<Typography variant="h4" align="center" gutterBottom>*/}
+            {/*    Registrar-se*/}
+            {/*</Typography>*/}
             <form onSubmit={handleSubmit}>
                 <TextField
                     fullWidth
@@ -83,24 +83,30 @@ const Register = ({handleRegister, navigate}) => {
                     value={formData.email}
                     onChange={handleChange}
                 />
-                <TextField
-                    fullWidth
-                    margin="normal"
-                    name="senha"
-                    label="Senha"
-                    type="password"
-                    value={formData.senha}
-                    onChange={handleChange}
-                />
-                <TextField
-                    fullWidth
-                    margin="normal"
-                    name="senhaConfirm"
-                    label="Confirmar Senha"
-                    type="password"
-                    value={formData.senhaConfirm}
-                    onChange={handleChange}
-                />
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            name="senha"
+                            label="Senha"
+                            type="password"
+                            value={formData.senha}
+                            onChange={handleChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            name="senhaConfirm"
+                            label="Confirmar Senha"
+                            type="password"
+                            value={formData.senhaConfirm}
+                            onChange={handleChange}
+                        />
+                    </Grid>
+                </Grid>
                 <Box sx={{mt: 3}}>
                     <Button
                         fullWidth

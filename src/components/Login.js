@@ -54,9 +54,9 @@ const Login = ({onLogin, navigate}) => {
     return (
         <Box sx={{width: '100%', maxWidth: 400, mx: 'auto'}}>
             <ToastContainer/>
-            <Typography variant="h4" align="center" gutterBottom>
-                Login
-            </Typography>
+            {/*<Typography variant="h4" align="center" gutterBottom>*/}
+            {/*    Login*/}
+            {/*</Typography>*/}
             <form onSubmit={handleSubmit}>
                 <TextField
                     fullWidth

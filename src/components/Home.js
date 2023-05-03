@@ -45,10 +45,10 @@ const Home = ({onLogin, toggleDarkMode}) => {
                         <Login onLogin={onLogin} navigate={toggleForm}/>
                     )}
                 </Box>
-                <Typography variant="body1" align="center" gutterBottom mt={15}>
+                <Typography variant="body1" align="center" gutterBottom mt={2}>
                     Conheça o projeto no GitHub:
                 </Typography>
-                <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
+                <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
                     <Button
                         variant="contained"
                         target="_blank"
