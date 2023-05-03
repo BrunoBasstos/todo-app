@@ -2,12 +2,9 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {Box, TextField, Button, Typography} from '@mui/material';
-import {Link} from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import {toast, ToastContainer} from 'react-toastify';
 import ErrorToast from './ErrorToast';
-
-axios.defaults.baseURL = 'http://localhost:5000';
 
 const Register = ({handleRegister, navigate}) => {
     const [formData, setFormData] = useState({
@@ -16,7 +13,6 @@ const Register = ({handleRegister, navigate}) => {
         senha: '',
         senhaConfirm: ''
     });
-    const [errors, setErrors] = useState(null);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -25,19 +21,14 @@ const Register = ({handleRegister, navigate}) => {
 
     const validateForm = () => {
         let formErrors = [];
-
-        if(!formData.nome) formErrors.push('O nome é obrigatório');
-
-        if(!formData.email) formErrors.push('O e-mail é obrigatório');
-
+        if (!formData.nome) formErrors.push('O nome é obrigatório');
+        if (!formData.email) formErrors.push('O e-mail é obrigatório');
         if (formData.senha !== formData.senhaConfirm) {
             formErrors.push('As senhas não coincidem');
         }
-
         if (formData.senha.length < 5) {
             formErrors.push('A senha deve ter no mínimo 5 caracteres');
         }
-
         return formErrors;
     };
 
@@ -46,7 +37,6 @@ const Register = ({handleRegister, navigate}) => {
         const formErrors = validateForm();
 
         if (formErrors.length > 0) {
-            setErrors(formErrors);
             toast.error(<ErrorToast errors={formErrors}/>);
         } else {
 
@@ -59,16 +49,13 @@ const Register = ({handleRegister, navigate}) => {
                 .catch(error => {
                     if (error.response && error.response.data) {
                         const errorsArray = error.response.data.map(error => error.msg);
-                        setErrors(errorsArray);
                         toast.error(<ErrorToast errors={errorsArray}/>); // Use o componente ErrorToast personalizado
                     } else {
                         const errorMessage = 'Erro ao registrar usuário';
-                        setErrors([errorMessage]);
                         toast.error(<ErrorToast errors={[errorMessage]}/>); // Use o componente ErrorToast personalizado
                     }
                 });
         }
-
     };
 
     return (
@@ -124,7 +111,7 @@ const Register = ({handleRegister, navigate}) => {
                         Registrar
                     </Button>
                 </Box>
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{mt: 2}}>
                     <Typography variant="body2" align="center">
                         Já possui uma conta?
                         {' '}

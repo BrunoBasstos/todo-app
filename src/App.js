@@ -1,19 +1,18 @@
 // /src/App.js
 import React, {useState, useEffect} from 'react';
-import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import axios from 'axios';
 import {Container} from '@mui/material';
 import TaskList from './components/TaskList';
 import UserList from './components/UserList';
 import Header from './components/Header';
-import Home from './components/Home'; // Importe o componente Home
+import Home from './components/Home';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {CssBaseline} from '@mui/material';
 
-axios.defaults.baseURL = 'http://localhost:5000';
-
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loggedUser, setLoggedUser] = useState({});
     const [darkMode, setDarkMode] = useState(() => {
         const localDarkMode = localStorage.getItem('darkMode');
         return localDarkMode === 'true';
@@ -36,13 +35,27 @@ function App() {
         if (token) {
             axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             setIsLoggedIn(true);
+            axios.get("/auth")
+                .then((response) => {
+                    setIsLoggedIn(true);
+                    setLoggedUser(response.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setIsLoggedIn(false);
+                    setLoggedUser({});
+                    localStorage.removeItem("token");
+                });
         } else {
             axios.defaults.headers.common.Authorization = null;
+            setIsLoggedIn(false);
+            setLoggedUser({});
         }
     }, []);
 
-    const handleLogin = () => {
+    const handleLogin = (usuario) => {
         setIsLoggedIn(true);
+        setLoggedUser(usuario);
     };
 
     const handleLogout = () => {
@@ -55,22 +68,24 @@ function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             <Router>
-                {!isLoggedIn && <Navigate to="/"/>}
+
                 <div>
                     {isLoggedIn &&
-                        <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} toggleDarkMode={toggleDarkMode}/>}
+                        <Header isLoggedIn={isLoggedIn} loggedUser={loggedUser} handleLogout={handleLogout}
+                                toggleDarkMode={toggleDarkMode}/>}
 
                     <Container className="mt-3">
                         <Routes>
                             {isLoggedIn ? (
                                 <>
                                     <Route path="/" element={<TaskList/>}/>
-                                    
-                                    <Route path="/usuarios" element={<UserList/>}/>
+                                    {loggedUser?.perfil === 'administrador' && (
+                                        <Route path="/usuarios" element={<UserList loggedUser={loggedUser}/>}/>
+                                    )}
                                 </>
                             ) : (
                                 <>
-                                    <Route path="/" exact
+                                    <Route path="*"
                                            element={<Home onLogin={handleLogin} toggleDarkMode={toggleDarkMode}/>}/>
                                 </>
                             )}
