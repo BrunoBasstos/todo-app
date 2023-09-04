@@ -38,7 +38,7 @@ Antes de executar o projeto, certifique-se de ter instalado:
 
 ## Observações
 
-Para utilizar o frontend, você deve ter a [ToDo API](https://github.com/seu_usuario/seu_repositorio_api) em execução e configurada corretamente.
+Para utilizar o frontend, você deve ter a [ToDo API](https://github.com/BrunoBasstos/todo-api) em execução e configurada corretamente.
 
 ## Contribuições
 
